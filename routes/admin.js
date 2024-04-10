@@ -3,17 +3,18 @@ const path = require("path");
 const express = require("express");
 
 const rootDir = require("../util/path");
-const productsController = require("../controllers/products");
-const addProductController = require("../controllers/products");
+const adminController = require("../controllers/admin");
+
 
 const router = express.Router();
 
 // /admin/add-product => GET
-router.get("/add-product", productsController.getAddProduct);
-router.get("/products", productsController.getAddProduct);
+router.get("/add-product", adminController.getAddProduct);
+// /admin/add-product => GET
+router.get("/products",adminController.getProducts);
 
 // /admin/add-product => POST
-router.post("/add-product", addProductController.addProduct);
+router.post("/add-product", adminController.postProduct);
 
 module.exports = router;
 // exports.products = products;w
