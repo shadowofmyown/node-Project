@@ -13,13 +13,13 @@ exports.postProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(title, imageUrl, price, description);
+  const product = new Product(null, title, imageUrl, price, description);
   product.save();
   res.redirect("/");
 };
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
-  console.log("check", editMode);
+  console.log("check", req);
   console.log("dad", Product);
 
   if (!editMode) {
@@ -37,6 +37,30 @@ exports.getEditProduct = (req, res, next) => {
       product: product,
     });
   });
+};
+exports.deleteProduct = (req, res, next) => {
+  console.log("logid", req.body.productId);
+  const id = req.body.productId;
+  Product.deleteProductById(id);
+  res.redirect("/admin/products");
+};
+exports.postEditProduct = (req, res, next) => {
+  // const prodId = req.body.productId;
+  console.log("logtitle", req.body.title);
+  const prodId = req.body.productId;
+  const updatedTitle = req.body.title;
+  const updatedPrice = req.body.price;
+  const updatedImageUrl = req.body.imageUrl;
+  const updatedDesc = req.body.description;
+  const updatedProduct = new Product(
+    prodId,
+    updatedTitle,
+    updatedImageUrl,
+    updatedDesc,
+    updatedPrice
+  );
+  updatedProduct.save();
+  res.redirect("/admin/products");
 };
 exports.getProducts = (req, res, next) => {
   Product.fetchAll((products) => {
