@@ -9,6 +9,7 @@ module.exports = class Cart {
     fs.readFile(p, (err, fileContent) => {
       let cart = { products: [], totalPrice: 0 };
       if (!err) {
+        console.log("cartcheck", JSON.parse(fileContent));
         cart = JSON.parse(fileContent);
       }
       // Analyze the cart => Find existing product
@@ -34,12 +35,16 @@ module.exports = class Cart {
     });
   }
   static deleteProduct(id, productPrice) {
-    fs.readFileProduct(p, (err, fileContent) => {
+    console.log("pnishant", p);
+    fs.readFile(p, (err, fileContent) => {
       if (err) {
         return;
       }
       const updatedCart = { ...JSON.parse(fileContent) };
       const product = updatedCart.products.find((prod) => prod.id === id);
+      if (!product) {
+        return;
+      }
       const productQty = product.qty;
       updatedCart.products = updatedCart.products.filter(
         (prod) => prod.id !== id

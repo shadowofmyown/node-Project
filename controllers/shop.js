@@ -46,14 +46,14 @@ exports.getCart = (req, res, next) => {
       const cartProducts = [];
       for (let product of products) {
         const cartProductData = cart.products.find(
-          (prod) => prod === product.id
+          (prod) => prod.id === product.id
         );
 
-        if (cart.products.find(prod.id === product.id)) {
+        if (cartProductData) {
           cartProducts.push({ productData: product, qty: cartProductData.qty });
         }
       }
-
+      console.log("cartProducts", cartProducts);
       res.render("shop/cart", {
         path: "/cart",
         pageTitle: "your Cart",
@@ -83,4 +83,18 @@ exports.getCheckout = (req, res, next) => {
     path: "/checkout",
     pageTitle: "checkout",
   });
+};
+exports.deleteitemfromcart = (req, res, next) => {
+  const prodId = req.body.productId;
+  // console.log("price", Product);
+  Product.findByID(prodId, (product) => {
+    Cart.deleteProduct(prodId, product.price);
+    res.redirect("/cart");
+  });
+
+  // res.render("shop/checkout", {
+  //   path: "/checkout",
+  //   pageTitle: "checkout",
+  // });
+  console.log("nishant");
 };
