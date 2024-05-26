@@ -7,14 +7,22 @@ exports.getAddProduct = (req, res, next) => {
   });
 };
 exports.postProduct = (req, res, next) => {
-  console.log("comming", req);
-  console.log("save");
+  // console.log("comming", req);
+  // console.log("save");
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
   const product = new Product(null, title, imageUrl, price, description);
-  product.save();
+  product
+    .save()
+    .then((result) => {
+      console.log("nishant", result);
+      redirect("/");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   res.redirect("/");
 };
 exports.getEditProduct = (req, res, next) => {

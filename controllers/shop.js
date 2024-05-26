@@ -2,13 +2,23 @@ const Product = require("../models/product");
 const Cart = require("../models/cart");
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("shop/product-list", {
-      prods: products,
-      pageTitle: "All Products",
-      path: "/products",
-    });
-  });
+  Product.fetchAll()
+    .then(([rows, fieldData]) => {
+      res.render("shop/product-list", {
+        //what it does above line
+        prods: rows,
+        pageTitle: "All Products",
+        path: "/products",
+      });
+    })
+    .catch();
+  // Product.fetchAll((products) => {
+  //   res.render("shop/product-list", {
+  //     prods: products,
+  //     pageTitle: "All Products",
+  //     path: "/products",
+  //   });
+  // });
 };
 exports.getProductById = (req, res, next) => {
   Product.fetchAll((products) => {
@@ -30,14 +40,24 @@ exports.getProductById = (req, res, next) => {
   });
 };
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("shop/index", {
-      //what it does above line
-      prods: products,
-      pageTitle: "Shop",
-      path: "/",
-    });
-  });
+  Product.fetchAll()
+    .then(([rows, fieldData]) => {
+      res.render("shop/index", {
+        //what it does above line
+        prods: rows,
+        pageTitle: "Shop",
+        path: "/",
+      });
+    })
+    .catch();
+  // Product.fetchAll((products) => {
+  //   res.render("shop/index", {
+  //     //what it does above line
+  //     prods: products,
+  //     pageTitle: "Shop",
+  //     path: "/",
+  //   });
+  // });
 };
 exports.getCart = (req, res, next) => {
   Cart.getCart((cart) => {
