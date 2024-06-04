@@ -34,9 +34,16 @@ User.hasMany(Product);
 sequelize
   //.sync({ force: true })it's task to overide the table.
   .sync()
-  .then((result) => {
-    console.log(result);
-    // app.listen(3000);
+  .then((result) => {})
+  .then((user) => {
+    if (!user) {
+      return User.create({ name: "Max", email: "test@test.com" });
+    }
+    return user;
+  })
+  .then((user) => {
+    console.log("user of nishant", user);
+    app.listen(3000);
   })
   .catch((err) => {
     console.log(err);
