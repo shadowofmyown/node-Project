@@ -11,12 +11,13 @@ exports.postProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  Product.create({
-    title: title,
-    price: price,
-    imageUrl: imageUrl,
-    description: description,
-  })
+  req.user
+    .createProduct({
+      title: title,
+      price: price,
+      imageUrl: imageUrl,
+      description: description,
+    })
     .then((result) => {
       return res.redirect("/");
     })
@@ -30,16 +31,19 @@ exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
   console.log("checkedit", req.query.edit);
   console.log("dad", Product);
-
   if (!editMode) {
     return res.redirect("/");
   }
   const prodId = req.params.productId;
-  Product.findByPk(prodId)
-    .then((result) => {
+
+  req.user
+    .getProducts({ where: { id: prodId } })
+    .then((results) => {
+      const result = results[0];
       if (!result) {
         return res.redirect("/");
       }
+      console.log("nishantprodid", result);
       res.render("admin/edit-product", {
         pageTitle: "Edit Product",
         path: "/admin/edit-product",
@@ -103,7 +107,8 @@ exports.postEditProduct = (req, res, next) => {
 };
 //in promise chainning if we are returning something from one promise untill its not completed next promise will be not executed?
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  req.user
+    .getProducts()
     .then((result) => {
       res.render("admin/products", {
         //what it does above line
